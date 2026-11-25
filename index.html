@@ -1,0 +1,633 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Equipo 1 | Dinámica de Liderazgo y Colaboración</title>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #090d16;
+      --card-bg: #131b2e;
+      --primary: #3b82f6;
+      --primary-hover: #2563eb;
+      --accent: #f59e0b;
+      --teal: #10b981;
+      --rose: #ef4444;
+      --purple: #8b5cf6;
+      --text: #f8fafc;
+      --text-muted: #94a3b8;
+      --border: rgba(255, 255, 255, 0.1);
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Plus Jakarta Sans', sans-serif; }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+    header {
+      background: rgba(19, 27, 46, 0.95);
+      border-bottom: 1px solid var(--border);
+      padding: 14px 28px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: sticky;
+      top: 0;
+      z-index: 50;
+    }
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+    .badge {
+      background: rgba(59, 130, 246, 0.2);
+      color: #60a5fa;
+      border: 1px solid rgba(59, 130, 246, 0.4);
+      padding: 5px 14px;
+      border-radius: 999px;
+      font-weight: 800;
+      font-size: 13px;
+    }
+    .team-info {
+      font-size: 13px;
+      color: var(--text-muted);
+    }
+    .team-info b { color: #fff; }
+    .nav-tabs {
+      display: flex;
+      gap: 8px;
+    }
+    .tab-btn {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--border);
+      color: var(--text-muted);
+      padding: 8px 18px;
+      border-radius: 10px;
+      font-weight: 700;
+      cursor: pointer;
+      font-size: 14px;
+      transition: all 0.2s;
+    }
+    .tab-btn:hover {
+      background: rgba(255, 255, 255, 0.1);
+      color: #fff;
+    }
+    .tab-btn.active {
+      background: var(--primary);
+      border-color: var(--primary);
+      color: #fff;
+      box-shadow: 0 4px 14px rgba(59, 130, 246, 0.4);
+    }
+    main {
+      flex: 1;
+      max-width: 1200px;
+      width: 100%;
+      margin: 0 auto;
+      padding: 30px 20px;
+    }
+    .view-panel {
+      display: none;
+      animation: fadeIn 0.25s ease-out;
+    }
+    .view-panel.active {
+      display: block;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    /* SLIDES CARDS */
+    .slide-box {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 40px;
+      min-height: 520px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+    }
+    .slide-tag {
+      color: var(--accent);
+      font-size: 14px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      margin-bottom: 8px;
+    }
+    .slide-title {
+      font-size: 34px;
+      font-weight: 800;
+      color: #fff;
+      line-height: 1.2;
+      margin-bottom: 24px;
+    }
+    .grid-cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 20px;
+      margin-bottom: 24px;
+    }
+    .card-item {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 24px;
+      border-top: 4px solid var(--primary);
+    }
+    .card-item h3 {
+      font-size: 19px;
+      color: #fff;
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .card-item p {
+      font-size: 14.5px;
+      color: #cbd5e1;
+      line-height: 1.6;
+    }
+    .slide-controls {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-top: 1px solid var(--border);
+      padding-top: 20px;
+    }
+    .action-btn {
+      background: var(--primary);
+      color: #fff;
+      border: none;
+      padding: 12px 24px;
+      border-radius: 10px;
+      font-size: 15px;
+      font-weight: 700;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      transition: all 0.2s;
+    }
+    .action-btn:hover {
+      background: var(--primary-hover);
+      transform: translateY(-1px);
+    }
+    .action-btn.secondary {
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid var(--border);
+    }
+    .action-btn.secondary:hover {
+      background: rgba(255, 255, 255, 0.15);
+    }
+    /* TEST STYLES */
+    .test-container {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 40px;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+    }
+    .question-box {
+      font-size: 24px;
+      font-weight: 800;
+      margin-bottom: 24px;
+      color: #fff;
+    }
+    .options-grid {
+      display: grid;
+      gap: 14px;
+      margin-bottom: 30px;
+    }
+    .opt-btn {
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid var(--border);
+      color: #f1f5f9;
+      padding: 18px 24px;
+      border-radius: 12px;
+      text-align: left;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      transition: all 0.2s;
+    }
+    .opt-btn:hover {
+      background: rgba(59, 130, 246, 0.15);
+      border-color: var(--primary);
+      transform: translateX(4px);
+    }
+    .opt-letter {
+      width: 34px;
+      height: 34px;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+      color: #60a5fa;
+    }
+    /* RESULT CARD */
+    .result-card {
+      text-align: center;
+      padding: 30px;
+      background: rgba(255, 255, 255, 0.02);
+      border-radius: 16px;
+      border: 1px solid var(--border);
+      animation: fadeIn 0.3s;
+    }
+    .result-avatar {
+      font-size: 64px;
+      margin-bottom: 12px;
+    }
+    .result-title {
+      font-size: 28px;
+      font-weight: 800;
+      color: #60a5fa;
+      margin-bottom: 12px;
+    }
+    .result-desc {
+      font-size: 16px;
+      color: #cbd5e1;
+      max-width: 700px;
+      margin: 0 auto 24px auto;
+      line-height: 1.6;
+    }
+    /* DILEMMAS STYLES */
+    .timer-badge {
+      background: rgba(239, 68, 68, 0.2);
+      color: #f87171;
+      border: 1px solid rgba(239, 68, 68, 0.4);
+      padding: 4px 14px;
+      border-radius: 999px;
+      font-weight: 800;
+      font-size: 14px;
+    }
+    .consequence-box {
+      margin-top: 20px;
+      padding: 20px;
+      border-radius: 12px;
+      display: none;
+      animation: fadeIn 0.3s;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="brand">
+      <span class="badge">EQUIPO 1</span>
+      <div class="team-info">
+        <b>Alison Gutiérrez</b> • <b>Diego Hernández</b> • <b>César Martínez</b> • <b>Juan Carlos Robledo</b>
+      </div>
+    </div>
+    <div class="nav-tabs">
+      <button class="tab-btn active" onclick="switchTab('slides')">📺 1. Diapositivas</button>
+      <button class="tab-btn" onclick="switchTab('test')">🎯 2. Test para el Salón</button>
+      <button class="tab-btn" onclick="switchTab('dilemas')">⚡ 3. Simulador de Casos</button>
+    </div>
+  </header>
+
+  <main>
+
+    <!-- PANEL 1: PRESENTACIÓN PROYECTABLE -->
+    <div id="panel-slides" class="view-panel active">
+      <div class="slide-box">
+        <div>
+          <div class="slide-tag" id="slideTag">SUBTEMA 3.1</div>
+          <h2 class="slide-title" id="slideTitle">Líderes, Seguidores y Colaboradores</h2>
+          <div class="grid-cards" id="slideCards">
+            <!-- Cards generadas dinámicamente -->
+          </div>
+        </div>
+        <div class="slide-controls">
+          <button class="action-btn secondary" onclick="prevSlide()">◀ Anterior</button>
+          <span style="color:var(--text-muted); font-weight:700;" id="slideIndicator">1 / 5</span>
+          <button class="action-btn" onclick="nextSlide()">Siguiente ▶</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- PANEL 2: TEST INTERACTIVO PARA EL SALÓN -->
+    <div id="panel-test" class="view-panel">
+      <div class="test-container">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px;">
+          <span class="badge">ACTIVIDAD EN VIVO</span>
+          <span style="color:var(--text-muted); font-size:14px;" id="testProgress">Pregunta 1 de 4</span>
+        </div>
+
+        <div id="testQuestionView">
+          <h2 class="question-box" id="testQuestionText">¿Pregunta?</h2>
+          <div class="options-grid" id="testOptionsGrid">
+            <!-- Botones de opciones -->
+          </div>
+        </div>
+
+        <div id="testResultView" style="display:none;" class="result-card">
+          <div class="result-avatar" id="resIcon">⭐</div>
+          <h2 class="result-title" id="resTitle">Seguidor Estrella</h2>
+          <p class="result-desc" id="resDesc">Descripción del estilo según Robert Kelley.</p>
+          <button class="action-btn" onclick="resetTest()">🔄 Probar con otro voluntario</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- PANEL 3: SIMULADOR DE DILEMAS EN GRUPO -->
+    <div id="panel-dilemas" class="view-panel">
+      <div class="slide-box" style="min-height: auto;">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:15px;">
+          <span class="badge" style="background:rgba(245, 158, 11, 0.2); color:#fbbf24; border-color:rgba(245, 158, 11, 0.4);">
+            DILEMA GRUPAL: ¿QUÉ HARÍAS TÚ?
+          </span>
+          <span class="timer-badge">Votación a mano alzada</span>
+        </div>
+
+        <h2 class="slide-title" style="font-size:26px; margin-bottom:16px;" id="dilemaTitle">
+          Caso 1: El Error del Líder
+        </h2>
+        <p style="font-size:16px; color:#cbd5e1; margin-bottom:24px; line-height:1.6;" id="dilemaContext">
+          El líder del proyecto presenta al profesor una propuesta con un error grave de cálculo que ustedes detectaron anoche. Si nadie dice nada, reprobarán la entrega. Si lo corriges en público, el líder puede molestarse. ¿Qué haces?
+        </p>
+
+        <div class="options-grid" id="dilemaOptions">
+          <!-- Opciones de dilema -->
+        </div>
+
+        <div id="dilemaFeedback" class="consequence-box">
+          <!-- Consecuencia y teoría aplicada -->
+        </div>
+        
+        <div style="margin-top:20px; display:flex; justify-content:flex-end;">
+          <button class="action-btn secondary" onclick="nextDilema()">Siguiente Caso ▶</button>
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <script>
+    // --- NAVEGACIÓN ENTRE PESTAÑAS ---
+    function switchTab(tabId) {
+      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+      document.querySelectorAll('.view-panel').forEach(p => p.classList.remove('active'));
+      event.target.classList.add('active');
+      document.getElementById('panel-' + tabId).classList.add('active');
+    }
+
+    // --- DIAPOSITIVAS ESENCIALES ---
+    const slidesData = [
+      {
+        tag: "UNIDAD 3.1: LA TRÍADA RELACIONAL",
+        title: "¿Quién es quién en las organizaciones modernas?",
+        cards: [
+          { icon: "👑", title: "El Líder", desc: "No manda por capricho: define el propósito ético y su misión es remover los obstáculos que frenan al equipo.", border: "#3b82f6" },
+          { icon: "🎯", title: "El Seguidor", desc: "Aporta la tracción y el esfuerzo real. Sin seguidores inteligentes y activos, ninguna estrategia funciona.", border: "#f59e0b" },
+          { icon: "🚀", title: "El Colaborador", desc: "Trabaja 'con' el líder, no 'para' el líder. Asume responsabilidad total (ownership) y propone soluciones autónomas.", border: "#10b981" }
+        ]
+      },
+      {
+        tag: "SUBTEMA 3.1.1: DINÁMICA DE GRUPOS",
+        title: "¿Grupo de Trabajo o Equipo de Alto Rendimiento?",
+        cards: [
+          { icon: "👥", title: "Grupo de Trabajo", desc: "Suma de individuos aislados. Responsabilidad dividida ('a mí no me tocaba'). El líder concentra todo el mando.", border: "#64748b" },
+          { icon: "⚡", title: "Equipo Ágil", desc: "Sinergia multiplicadora (1+1 > 3). Responsabilidad mutua ('el éxito o fallo es de todos'). Liderazgo compartido.", border: "#3b82f6" },
+          { icon: "📈", title: "Modelo Tuckman", desc: "Todo equipo madura por etapas: Formación ➔ Tormenta (fricción necesaria) ➔ Normalización ➔ Alto Desempeño.", border: "#8b5cf6" }
+        ]
+      },
+      {
+        tag: "SUBTEMA 3.1.1: PATOLOGÍAS GRUPALES",
+        title: "Las dos trampas que destruyen a los grupos",
+        cards: [
+          { icon: "🧠", title: "Groupthink (Pensamiento de Grupo)", desc: "Presión silenciosa a coincidir con el jefe por no quedar mal. Antídoto: Nombrar siempre a un 'abogado del diablo'.", border: "#ef4444" },
+          { icon: "🛋️", title: "Social Loafing (Holgazanería)", desc: "Tendencia a esforzarse menos cuando el trabajo se diluye en bola. Antídoto: Tareas individuales claras y visibles.", border: "#f59e0b" },
+          { icon: "🛡️", title: "Seguridad Psicológica", desc: "El factor clave de Amy Edmondson: Que nadie en el salón tema admitir un error o hacer una pregunta 'obvia'.", border: "#10b981" }
+        ]
+      },
+      {
+        tag: "SUBTEMA 3.1.2: CIENCIA DEL FOLLOWERSHIP",
+        title: "Los 5 Tipos de Seguidores (Robert Kelley)",
+        cards: [
+          { icon: "⭐", title: "1. Estrella (Ejemplar)", desc: "Alto pensamiento crítico + Alto compromiso. Cuestiona con respeto y resuelve problemas con autonomía.", border: "#10b981" },
+          { icon: "🤖", title: "2. Conformista (Yes-Man)", desc: "Muy activo pero cero pensamiento crítico. Acata todo ciegamente sin advertir los peligros.", border: "#f59e0b" },
+          { icon: "🎭", title: "3. Alienado", desc: "Muy listo para ver los fallos de todos, pero se queda en la queja de pasillo sin proponer nada.", border: "#ef4444" }
+        ]
+      },
+      {
+        tag: "SUBTEMAS 3.1.3 & 3.1.4: LIDERAZGO DISTRIBUIDO",
+        title: "Liderar hacia Arriba (Managing Up) y Servir",
+        cards: [
+          { icon: "🤲", title: "Liderazgo Servicial", desc: "Robert Greenleaf: El líder está en la base para servir y hacer brillar a sus colaboradores, no al revés.", border: "#3b82f6" },
+          { icon: "🔼", title: "Managing Up", desc: "Liderar a tu propio líder: Traer soluciones estructuradas y alternativas, en lugar de solo arrojar problemas.", border: "#10b981" },
+          { icon: "🔄", title: "Liderazgo Rotativo", desc: "En este proyecto, cada uno de nosotros lideró su tema sin necesidad de que uno solo monopolizara el mando.", border: "#8b5cf6" }
+        ]
+      }
+    ];
+
+    let currentSlide = 0;
+    function renderSlide() {
+      const s = slidesData[currentSlide];
+      document.getElementById('slideTag').innerText = s.tag;
+      document.getElementById('slideTitle').innerText = s.title;
+      document.getElementById('slideIndicator').innerText = `${currentSlide + 1} / ${slidesData.length}`;
+      
+      const cardsCont = document.getElementById('slideCards');
+      cardsCont.innerHTML = '';
+      s.cards.forEach(c => {
+        const div = document.createElement('div');
+        div.className = 'card-item';
+        div.style.borderTopColor = c.border;
+        div.innerHTML = `<h3><span>${c.icon}</span> ${c.title}</h3><p>${c.desc}</p>`;
+        cardsCont.appendChild(div);
+      });
+    }
+    function nextSlide() {
+      if (currentSlide < slidesData.length - 1) { currentSlide++; renderSlide(); }
+    }
+    function prevSlide() {
+      if (currentSlide > 0) { currentSlide--; renderSlide(); }
+    }
+    renderSlide();
+
+    // --- TEST DE KELLEY PARA EL SALÓN ---
+    const testQuestions = [
+      {
+        q: "1. En un trabajo escolar, el líder propone una idea que tú sabes que está equivocada o anticuada. ¿Qué haces?",
+        opts: [
+          { text: "Se lo digo en privado con datos y le propongo una alternativa mejor.", points: { star: 2, alien: 0, yes: 0, sheep: 0 } },
+          { text: "No digo nada y hago lo que él diga; al fin y al cabo él es el líder.", points: { star: 0, alien: 0, yes: 2, sheep: 0 } },
+          { text: "Me quejo con los demás a sus espaldas: 'este tipo no sabe nada'.", points: { star: 0, alien: 2, yes: 0, sheep: 0 } },
+          { text: "Ni me di cuenta del error, solo espero que me digan qué párrafo escribir.", points: { star: 0, alien: 0, yes: 0, sheep: 2 } }
+        ]
+      },
+      {
+        q: "2. ¿Cómo es tu nivel de iniciativa cuando te integras a un equipo?",
+        opts: [
+          { text: "Investigo por mi cuenta y propongo herramientas para facilitar el trabajo de todos.", points: { star: 2, alien: 0, yes: 1, sheep: 0 } },
+          { text: "Hago rápido lo que me pidan, pero solo si me dan la orden exacta.", points: { star: 0, alien: 0, yes: 2, sheep: 0 } },
+          { text: "Hago lo mínimo posible para pasar desapercibido y que no me carguen la mano.", points: { star: 0, alien: 1, yes: 0, sheep: 2 } },
+          { text: "Sé hacer cosas excelentes, pero como el equipo no me motiva, no doy mi 100%.", points: { star: 0, alien: 2, yes: 0, sheep: 0 } }
+        ]
+      },
+      {
+        q: "3. Cuando el equipo tiene una fecha de entrega límite en 2 horas y alguien se atrasó:",
+        opts: [
+          { text: "Me ofrezco a apoyarlo y destrabar la tarea para que el equipo gane.", points: { star: 2, alien: 0, yes: 1, sheep: 0 } },
+          { text: "Le aviso al profesor que ese compañero no cumplió para salvar mi parte.", points: { star: 0, alien: 2, yes: 0, sheep: 0 } },
+          { text: "Si el líder no me pide expresamente ayudarlo, yo no me meto.", points: { star: 0, alien: 0, yes: 1, sheep: 2 } }
+        ]
+      },
+      {
+        q: "4. ¿Qué frase describe mejor tu rol favorito en los grupos?",
+        opts: [
+          { text: "'Soy el socio estratégico: pienso, propongo y ayudo a resolver'.", points: { star: 3, alien: 0, yes: 0, sheep: 0 } },
+          { text: "'A mí solo díganme qué hacer y yo lo hago al pie de la letra'.", points: { star: 0, alien: 0, yes: 3, sheep: 0 } },
+          { text: "'Sé que las cosas se hacen mal, pero me da flojera pelear con la gente'.", points: { star: 0, alien: 3, yes: 0, sheep: 0 } }
+        ]
+      }
+    ];
+
+    let currentTestQ = 0;
+    let scores = { star: 0, yes: 0, alien: 0, sheep: 0 };
+
+    function renderTestQuestion() {
+      const q = testQuestions[currentTestQ];
+      document.getElementById('testProgress').innerText = `Pregunta ${currentTestQ + 1} de ${testQuestions.length}`;
+      document.getElementById('testQuestionText').innerText = q.q;
+      
+      const grid = document.getElementById('testOptionsGrid');
+      grid.innerHTML = '';
+      const letters = ['A', 'B', 'C', 'D'];
+      
+      q.opts.forEach((o, i) => {
+        const btn = document.createElement('button');
+        btn.className = 'opt-btn';
+        btn.innerHTML = `<span class="opt-letter">${letters[i]}</span> <span>${o.text}</span>`;
+        btn.onclick = () => answerTest(o.points);
+        grid.appendChild(btn);
+      });
+    }
+
+    function answerTest(pts) {
+      for (let k in pts) scores[k] += pts[k];
+      currentTestQ++;
+      if (currentTestQ < testQuestions.length) {
+        renderTestQuestion();
+      } else {
+        showTestResult();
+      }
+    }
+
+    function showTestResult() {
+      document.getElementById('testQuestionView').style.display = 'none';
+      document.getElementById('testResultView').style.display = 'block';
+      
+      let maxKey = 'star';
+      for (let k in scores) {
+        if (scores[k] > scores[maxKey]) maxKey = k;
+      }
+
+      const resultsData = {
+        star: {
+          icon: "⭐",
+          title: "Seguidor Estrella / Colaborador Ejemplar",
+          desc: "¡Felicidades! Tienes Alto Pensamiento Crítico y Alto Compromiso Activo. No te callas ante los errores, pero siempre propones soluciones y trabajas con sentido de propiedad. Eres el socio que cualquier empresa desea contratar."
+        },
+        yes: {
+          icon: "🤖",
+          title: "Seguidor Conformista ('Yes-People')",
+          desc: "Eres muy trabajador y cumplidor, pero rara vez cuestionas lo que te mandan. ¡Cuidado! Si tu líder toma una mala decisión, tú la ejecutarás sin avisarle del peligro. Desarrolla tu coraje de desafiar."
+        },
+        alien: {
+          icon: "🎭",
+          title: "Seguidor Alienado",
+          desc: "Tienes un intelecto y sentido crítico muy afilado, pero te ha ganado el cinismo o el desgano. Ves todos los defectos del equipo pero solo los comentas en los pasillos. ¡Canaliza esa inteligencia proponiendo cambios reales!"
+        },
+        sheep: {
+          icon: "🐑",
+          title: "Seguidor Pasivo ('Oveja')",
+          desc: "Prefieres que alguien más tome las riendas y te diga exactamente qué hacer paso por paso. Te falta iniciativa propia. Atrévete a dar un paso adelante y aportar ideas."
+        }
+      };
+
+      const res = resultsData[maxKey];
+      document.getElementById('resIcon').innerText = res.icon;
+      document.getElementById('resTitle').innerText = res.title;
+      document.getElementById('resDesc').innerText = res.desc;
+    }
+
+    function resetTest() {
+      currentTestQ = 0;
+      scores = { star: 0, yes: 0, alien: 0, sheep: 0 };
+      document.getElementById('testResultView').style.display = 'none';
+      document.getElementById('testQuestionView').style.display = 'block';
+      renderTestQuestion();
+    }
+    renderTestQuestion();
+
+    // --- DILEMAS INTERACTIVOS ---
+    const dilemasData = [
+      {
+        title: "Caso 1: El Error Crítico del Líder",
+        context: "El líder del proyecto va a presentar al profesor un diseño que tú descubriste que no compilará o tiene un error fatal. El líder tiene fama de enojarse si lo contradicen. ¿Qué vota el salón?",
+        options: [
+          { text: "Opción A: Callarme y dejar que el profesor se dé cuenta para que el líder aprenda la lección.", 
+            feedback: "❌ <b>Caíste en Seguidor Alienado:</b> El líder se equivocó, pero el equipo entero reprobó. La falta de coraje de apoyar destruyó el resultado del grupo.", bg: "rgba(239,68,68,0.15)", border: "#ef4444" },
+          { text: "Opción B: Interrumpirlo bruscamente frente a todo el salón diciendo que está mal.", 
+            feedback: "⚠️ <b>Agresividad innecesaria:</b> Generas conflicto destructivo y rompes la seguridad psicológica del grupo.", bg: "rgba(245,158,11,0.15)", border: "#f59e0b" },
+          { text: "Opción C: Pedirle un minuto antes de pasar, mostrarle la evidencia con respeto y darle la corrección lista.", 
+            feedback: "✅ <b>¡Colaborador Valiente (Chaleff) & Managing Up!:</b> Salvaste el proyecto, cuidaste la imagen del líder y resolviste con iniciativa propia.", bg: "rgba(16,185,129,0.15)", border: "#10b981" }
+        ]
+      },
+      {
+        title: "Caso 2: El 'Fantasma' del Equipo (Social Loafing)",
+        context: "Faltan 24 horas para la entrega final y uno de los integrantes no ha enviado su parte ni contesta mensajes. ¿Qué decide el equipo?",
+        options: [
+          { text: "Opción A: Hacer su parte entre todos, poner su nombre en la portada y no decirle nada.", 
+            feedback: "❌ <b>Premiaste la Holgazanería Social:</b> Fomentas que esa persona lo repita y desgastas al resto del equipo.", bg: "rgba(239,68,68,0.15)", border: "#ef4444" },
+          { text: "Opción B: Eliminarlo del trabajo sin previo aviso ni intentar llamarlo.", 
+            feedback: "⚠️ <b>Falta de comunicación asertiva:</b> Podría haber tenido una emergencia real.", bg: "rgba(245,158,11,0.15)", border: "#f59e0b" },
+          { text: "Opción C: Fijar una llamada urgente con ultimátum claro; si no responde, redistribuir la tarea y reportar con transparencia los aportes reales.", 
+            feedback: "✅ <b>Madurez y Rendición de Cuentas:</b> Se cuida el resultado del equipo sin caer en la complicidad de la flojera.", bg: "rgba(16,185,129,0.15)", border: "#10b981" }
+        ]
+      }
+    ];
+
+    let currentDilema = 0;
+    function renderDilema() {
+      const d = dilemasData[currentDilema];
+      document.getElementById('dilemaTitle').innerText = d.title;
+      document.getElementById('dilemaContext').innerText = d.context;
+      document.getElementById('dilemaFeedback').style.display = 'none';
+
+      const cont = document.getElementById('dilemaOptions');
+      cont.innerHTML = '';
+      d.options.forEach(opt => {
+        const btn = document.createElement('button');
+        btn.className = 'opt-btn';
+        btn.innerHTML = `<span>⚡</span> <span>${opt.text}</span>`;
+        btn.onclick = () => {
+          const fb = document.getElementById('dilemaFeedback');
+          fb.style.display = 'block';
+          fb.style.background = opt.bg;
+          fb.style.border = `1px solid ${opt.border}`;
+          fb.innerHTML = opt.feedback;
+        };
+        cont.appendChild(btn);
+      });
+    }
+    function nextDilema() {
+      currentDilema = (currentDilema + 1) % dilemasData.length;
+      renderDilema();
+    }
+    renderDilema();
+  </script>
+</body>
+</html>
